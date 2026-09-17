@@ -48,17 +48,17 @@ class AgenteVocacional:
             Profesion(
                "derecho",
                5,1,5,9,4,10,8
-            )
+            ),
 
             Profesion(
                 "administracion",
                 5,2,6,10,3,9,8
-            )
+            ),
 
             Profesion(
                "diseño grafico",
                2,2,10,4,3,6,6
-            )
+            ),
 
             Profesion(
                "docencia",
@@ -67,5 +67,95 @@ class AgenteVocacional:
 
         ]
 
-def calcular_heuristica(self, usaurio, profesion):
+def calcular_heuristica(self, usuario, profesion):
+   score = 0
+   score += (10 - abs(usuario["matematicas"] - profesion.matematicas)) * 3
+   score += (10 - abs(usuario["programacion"] - profesion.programacion)) * 3
+   score += (10 - abs(usuario["creatividad"] - profesion.creatividad)) * 2
+   score += (10 - abs(usuario["liderazgo"] - profesion.liderazgo)) * 2
+   score += (10 - abs(usuario["investigacion"] - profesion.investigacion)) * 3
+   score += (10 - abs(usuario["comunicacion"] - profesion.comunicacion)) * 2
+   score += (10 - abs(usuario["salario"] - profesion.salario)) * 4
    
+   return score
+
+def recomendar(self, usuario):
+
+   resultados = []
+
+   for profesion in self.profesiones:
+
+      valor = self.calcular_heuristica(
+         usuario,
+         profesion
+      )
+
+      resultados.append(
+         (profesion.nombre, valor)
+      )
+
+      resultados.sort(
+         key=lambda x: x[1],
+         reverse=True
+      )
+
+      self.historial.append(
+         {
+            "fecha": datetime.now(),
+            "resultado": resultados[0][0]
+         }
+      )
+
+      return resultados
+
+   def mostrar_historial(self):
+
+      print("Historial de consultas\n")
+
+      if len(self.historial) == 0:
+         print("No hay historial de consultas")
+         return   
+
+      for consulta in self.historial:
+
+         print(
+            consulta["fecha"],
+            "-> ",
+            consulta["resultado"]
+         )
+
+def capturar_datos():
+
+   print("\nresponde del 1 al 10")
+
+   usuario ={}
+
+   usuario["matematicas"] = int(
+      input("gusto por matematicas:")
+   )
+
+   usuario["programacion"] = int(
+      input("gusto por programacion:")
+   )
+
+   usuario["creatividad"] = int(
+      input("creatividad:")
+   )
+
+   usuario["liderazgo"] = int(
+      input("liderazgo:")
+   )
+
+   usuario["investigacion"] = int(
+      input("interes por la investigacion:")
+   )
+
+   usuario["comunicacion"] = int(
+      input("habilidad de comunicacion:")
+   )
+
+
+
+
+
+         
